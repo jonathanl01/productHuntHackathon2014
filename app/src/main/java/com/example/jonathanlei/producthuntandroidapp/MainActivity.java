@@ -3,6 +3,7 @@ package com.example.jonathanlei.producthuntandroidapp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,92 +39,6 @@ public class MainActivity extends Activity {
                     .commit();
         }
 
-//        JSONObject testConnect = new JSONObject();
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String response = null;
-        JSONObject clientOAuth = new JSONObject();
-
-        final String PRODUCTHUNT_BASE_URL = "https://api.producthunt.com/v1/oauth/token";
-        String client_id = "eb43b40e7c53c3891f259ea0d94f61f94051bbfb114e892664ebc7d32bf233eb";
-        String client_secret = "cf2bab45e78cdfe7bf3db7b593ee3e0918f7e60807eafa73450beb26a36dcf99";
-//      String redirect_uri = null;
-//      String response_type = "code";
-//      String scope = "public private";
-        String grant_type = "client_credentials";
-
-
-        try {
-
-
-            clientOAuth.put("client_id", client_id);
-            clientOAuth.put("client_secret", client_secret);
-
-            //https://api.producthunt.com/v1/oauth/authorize?client_id=[clientid]&redirect_uri=[where shall we redirect to?]&response_type=code&scope=public%private
-            Uri builtUri = Uri.parse(PRODUCTHUNT_BASE_URL).buildUpon()
-                    .appendQueryParameter("client_id", client_id)
-                    .appendQueryParameter("client_secret", client_secret)
-                    .appendQueryParameter("grant_type", grant_type)
-                    .build();
-
-            URL url = new URL(builtUri.toString());
-
-            // Create the request to OpenWeatherMap, and open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
-
-            if (inputStream == null) {
-                // Nothing to do.
-                //return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder buffer = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-
-            }
-            response = buffer.toString();
-            //return response.toString();//this.getWeatherDataFromJson(forecastJsonStr, numDays);
-
-            TextView text = (TextView) findViewById(R.id.frag_body);
-
-            text.setText(response);
-
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attempting
-            // to parse it.
-            //return null;
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
-                }
-            }
-        }
-
-
     }
 
 
@@ -151,14 +66,131 @@ public class MainActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        public static String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+
+        private TextView textview;
+
         public PlaceholderFragment() {
+
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            ProductHunt_API test = new ProductHunt_API();
+
+            textview = (TextView) rootView.findViewById(R.id.frag_body);
+
+            //String response = test.execute();
+            test.execute();
+
             return rootView;
+        }
+
+
+        public class ProductHunt_API extends AsyncTask<Void, Void, Void> {
+            private String response;
+
+            @Override
+            protected void onPostExecute(Void voids){
+
+
+                textview.setText(response);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                HttpURLConnection urlConnection = null;
+                BufferedReader reader = null;
+
+                JSONObject clientOAuth = new JSONObject();
+
+                final String PRODUCTHUNT_BASE_URL = "https://api.producthunt.com/v1/oauth/token";
+                String client_api_key = "f4e6e5c4813a1b4542fce5d24dab367727825497ef4ec02afcfbec0518a46fa5";
+                String client_secret = "c0f49bf9d0148ae323651d00e21fe1289b7dc1b954364aa5be9f66e7ca048521";
+//      String redirect_uri = null;
+//      String response_type = "code";
+//      String scope = "public private";
+                String grant_type = "client_credentials";
+
+
+                try {
+
+
+                    clientOAuth.put("client_api_key", client_api_key);
+                    clientOAuth.put("client_secret", client_secret);
+
+                    //https://api.producthunt.com/v1/oauth/authorize?client_api_key=[clientid]&redirect_uri=[where shall we redirect to?]&response_type=code&scope=public%private
+                    Uri builtUri = Uri.parse(PRODUCTHUNT_BASE_URL).buildUpon()
+                            .appendQueryParameter("client_id", client_api_key)
+                            .appendQueryParameter("client_secret", client_secret)
+                            .appendQueryParameter("grant_type", grant_type)
+                            .build();
+
+                    URL url = new URL(builtUri.toString());
+
+                    Log.v(LOG_TAG, "url is: " + url.toString());
+
+                    // Create the request to OpenWeatherMap, and open the connection
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.connect();
+
+                    // Read the input stream into a String
+                    InputStream inputStream = urlConnection.getInputStream();
+
+                    if (inputStream == null) {
+                        // Nothing to do.
+                        //return null;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder buffer = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                        // But it does make debugging a *lot* easier if you print out the completed
+                        // buffer for debugging.
+                        buffer.append(line + "\n");
+                    }
+
+                    if (buffer.length() == 0) {
+                        // Stream was empty.  No point in parsing.
+
+                    }
+                    response = buffer.toString();
+                    //return response;
+                    //return response.toString();//this.getWeatherDataFromJson(forecastJsonStr, numDays);
+
+
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Error ", e);
+                    // If the code didn't successfully get the weather data, there's no point in attempting
+                    // to parse it.
+                    //return null;
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, e.getMessage(), e);
+                    e.printStackTrace();
+                    //return null;
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (final IOException e) {
+                            Log.e(LOG_TAG, "Error closing stream", e);
+                        }
+                    }
+                    //return null;
+                }
+
+                return null;
+            }
+
         }
     }
 
