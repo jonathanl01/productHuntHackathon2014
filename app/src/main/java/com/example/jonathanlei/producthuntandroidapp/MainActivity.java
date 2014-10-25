@@ -70,6 +70,8 @@ public class MainActivity extends Activity {
 
         private TextView textview;
 
+        private String access_token = null;
+
         public PlaceholderFragment() {
 
         }
@@ -92,6 +94,13 @@ public class MainActivity extends Activity {
 
         public class ProductHunt_API extends AsyncTask<Void, Void, Void> {
             private String response;
+
+            private String getToken(String json){
+
+                
+
+                return "";
+            }
 
             @Override
             protected void onPostExecute(Void voids){
@@ -136,7 +145,7 @@ public class MainActivity extends Activity {
 
                     // Create the request to OpenWeatherMap, and open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestMethod("POST");
                     urlConnection.connect();
 
                     // Read the input stream into a String
