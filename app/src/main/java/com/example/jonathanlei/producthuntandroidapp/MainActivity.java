@@ -11,9 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 //import com.google.gson.JsonObject;
 
 
@@ -73,6 +78,8 @@ public class MainActivity extends Activity {
 
         private String access_token = null;
 
+        private ArrayAdapter<String> mPostsAdapter;
+
         public PlaceholderFragment() {
 
         }
@@ -98,6 +105,29 @@ public class MainActivity extends Activity {
                     // Perform action on click
                     ProductHunt_getPost postGetter = new ProductHunt_getPost();
                     postGetter.execute();
+
+                }
+            });
+
+            ArrayList<String> junkData = new ArrayList<String>();
+
+            junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");
+            junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");
+            junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");
+            junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");
+            junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");junkData.add("Testing");
+
+            mPostsAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    R.layout.list_item_posts,
+                    R.id.list_item_posts_textView,
+                    junkData);
+            ListView listView = (ListView) rootView.findViewById(R.id.listView_posts);
+            listView.setAdapter(mPostsAdapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 }
             });
@@ -218,9 +248,27 @@ public class MainActivity extends Activity {
 
             final String PRODUCTHUNT_BASE_URL = "https://api.producthunt.com/v1/";
 
-            String postData;
+            ArrayList<String> postData;
 
-            private String getProductHuntPost(String accessToken) {
+
+            private ArrayList<String> productNameParser(String json)throws JSONException{
+
+                JSONObject postResponse = new JSONObject(json);
+                JSONArray posts = postResponse.getJSONArray("posts");
+
+                ArrayList<String> nameList = new ArrayList<String>();
+
+
+                for(int i=0; i < posts.length(); i++ ){
+                    JSONObject post = posts.getJSONObject(i);
+                    nameList.add(post.getString("name"));
+
+                }
+
+                return nameList;
+            }
+
+            private ArrayList<String> getProductHuntPost(String accessToken) {
 
                 String getPostURL = PRODUCTHUNT_BASE_URL + "posts";
 
@@ -264,14 +312,18 @@ public class MainActivity extends Activity {
                         // Stream was empty.  No point in parsing.
 
                     }
-                    return buffer.toString();
+                    return productNameParser(buffer.toString());
 
                 } catch (IOException e) {
                     Log.e(LOG_TAG, "Error ", e);
                     // If the code didn't successfully get the weather data, there's no point in attempting
                     // to parse it.
                     //return null;
-                } finally {
+                } catch (JSONException e){
+                    Log.e(LOG_TAG,e.getMessage(),e);
+                    e.printStackTrace();
+
+                }finally {
                     if (urlConnection != null) {
                         urlConnection.disconnect();
                     }
@@ -286,13 +338,18 @@ public class MainActivity extends Activity {
                 }
 
 
-                return "";
+                return null;
             }
 
 
             @Override
             protected void onPostExecute(Void voids) {
-                textview.setText(postData);
+                //textview.setText(postData);
+                mPostsAdapter.clear();
+
+                for(String str: postData){
+                    mPostsAdapter.add(str);
+                }
             }
 
             @Override
