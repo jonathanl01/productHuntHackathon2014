@@ -48,17 +48,16 @@ public class PostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ProductHunt_getOauth productHunt_getOauth = new ProductHunt_getOauth();
-        productHunt_getOauth.execute(GET_OAUTH_TOKEN);
+        FetchProductHuntApiTask fetchProductHunt_apiTask = new FetchProductHuntApiTask();
+        fetchProductHunt_apiTask.execute(GET_OAUTH_TOKEN);
 
         Button searchButton = (Button) rootView.findViewById(R.id.search_button);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                ProductHunt_getOauth postGetter = new ProductHunt_getOauth();
+                FetchProductHuntApiTask postGetter = new FetchProductHuntApiTask();
                 postGetter.execute(GET_DAILY_POSTS);
-
             }
         });
 
@@ -84,9 +83,9 @@ public class PostsFragment extends Fragment {
     }
 
 
-    public class ProductHunt_getOauth extends AsyncTask<String, Void, ArrayList<String>> {
+    public class FetchProductHuntApiTask extends AsyncTask<String, Void, ArrayList<String>> {
 
-        private final String LOG_TAG = ProductHunt_getOauth.class.getSimpleName();
+        private final String LOG_TAG = FetchProductHuntApiTask.class.getSimpleName();
         private final String PRODUCT_HUNT_API_URL = "https://api.producthunt.com/v1/";
         private final String client_api_key = "f4e6e5c4813a1b4542fce5d24dab367727825497ef4ec02afcfbec0518a46fa5";
         private final String client_secret = "c0f49bf9d0148ae323651d00e21fe1289b7dc1b954364aa5be9f66e7ca048521";
