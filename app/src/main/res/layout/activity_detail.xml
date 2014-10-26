@@ -14,11 +14,20 @@
         android:layout_gravity="left|top" />
 
     <TextView
-        android:layout_width="188dp"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Make App Icon"
+        android:text="Make App Icon\n This app is amazing\n Made by: Me"
         android:id="@+id/productDetail"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/comments"
+        android:id="@+id/textView"
         android:layout_gravity="center_horizontal|bottom" />
 
 </FrameLayout>

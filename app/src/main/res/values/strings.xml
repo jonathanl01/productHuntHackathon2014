@@ -7,5 +7,10 @@
     <string name="search_button">Search</string>
     <string name="productHunt_apiURL"></string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="comments">
+        comments comments comments comments comments comments comments comments
+        comments comments comments comments comments comments comments comments
+        comments comments comments comments comments comments comments comments
+    </string>
 
 </resources>

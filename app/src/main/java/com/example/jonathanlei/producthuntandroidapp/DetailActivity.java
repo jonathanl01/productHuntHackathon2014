@@ -4,19 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.io.InputStream;
 
 
 public class DetailActivity extends Activity {
@@ -80,9 +74,11 @@ public class DetailActivity extends Activity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             Intent intent = getActivity().getIntent();
 
+
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
                 this.mPostsStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detailFragment_textView)).setText(mPostsStr);
+
+                //((TextView) rootView.findViewById(R.id.detailFragment_textView)).setText(mPostsStr);
             }
 
 
@@ -93,8 +89,5 @@ public class DetailActivity extends Activity {
 
 
     }
-
-    //Download image
-
 
 }
