@@ -224,9 +224,10 @@ public class MainActivity extends Activity {
                     Log.v(LOG_TAG, "url is: " + url.toString());
 
                     // Create the request to OpenWeatherMap, and open the connection
-                    urlConnection.addRequestProperty("Authorization", "Bearer " + accessToken);
+
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
                     urlConnection.connect();
 
                     // Read the input stream into a String
