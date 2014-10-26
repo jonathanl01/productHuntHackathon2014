@@ -3,17 +3,28 @@ package com.example.jonathanlei.producthuntandroidapp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.InputStream;
 
 
 public class DetailActivity extends Activity {
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
+
+    private ImageView productImage;
+    private String productDetail;
+    private Bitmap bitmap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +35,11 @@ public class DetailActivity extends Activity {
                     .commit();
         }
 
+        productImage = (ImageView)findViewById(R.id.productImage);
+        //bitmap = getBitmapFromURL(testString);
+
+        new ImageDownloader(productImage).execute("https://api.url2png.com/v6/P5329C1FA0ECB6/be123d197e397a077581099b234283b3/png/?thumbnail_max_width=300&url=http%3A%2F%2Fmakeappicon.com%2F");
+
     }
 
 
@@ -31,6 +47,7 @@ public class DetailActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
+
         return true;
     }
 
@@ -51,6 +68,7 @@ public class DetailActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
         private static final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+        String testString = "https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png";
         private String mPostsStr;
 
         public PlaceholderFragment() {
@@ -67,7 +85,16 @@ public class DetailActivity extends Activity {
                 ((TextView) rootView.findViewById(R.id.detailFragment_textView)).setText(mPostsStr);
             }
 
+
+
+
             return rootView;
         }
+
+
     }
+
+    //Download image
+
+
 }

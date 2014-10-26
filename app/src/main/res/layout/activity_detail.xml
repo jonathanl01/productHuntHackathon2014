@@ -4,4 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.jonathanlei.producthuntandroidapp.DetailActivity"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/productImage"
+        android:layout_gravity="left|top" />
+
+    <TextView
+        android:layout_width="188dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Make App Icon"
+        android:id="@+id/productDetail"
+        android:layout_gravity="center_horizontal|bottom" />
+
+</FrameLayout>
