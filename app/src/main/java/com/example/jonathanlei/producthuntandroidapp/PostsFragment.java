@@ -64,7 +64,8 @@ public class PostsFragment extends Fragment {
         mPostsAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_posts,
-                R.id.list_item_posts_textView,
+                R.id.list_item_posts_textView
+                ,
                 new ArrayList<String>());
         ListView listView = (ListView) rootView.findViewById(R.id.listView_posts);
         listView.setAdapter(mPostsAdapter);
