@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -76,6 +77,8 @@ public class MainActivity extends Activity {
 
         }
 
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -87,6 +90,17 @@ public class MainActivity extends Activity {
 
             //String response = test.execute();
             test.execute();
+
+            Button searchButton = (Button) rootView.findViewById(R.id.search_button);
+
+            searchButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Perform action on click
+                    ProductHunt_getPost postGetter = new ProductHunt_getPost();
+                    postGetter.execute();
+
+                }
+            });
 
             return rootView;
         }
@@ -114,8 +128,7 @@ public class MainActivity extends Activity {
             @Override
             protected void onPostExecute(Void voids) {
 
-                ProductHunt_getPost postGetter = new ProductHunt_getPost();
-                postGetter.execute();
+
 
             }
 
