@@ -71,10 +71,8 @@ public class PostsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Post post = (Post) mPostsAdapter.getItem(position);
-                String nameStr = post.getName();
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("post", post);
-                intent.putExtra(Intent.EXTRA_TEXT, nameStr);
                 startActivity(intent);
             }
         });

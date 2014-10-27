@@ -5,13 +5,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.jonathanlei.producthuntandroidapp.model.Post;
 
@@ -31,12 +31,6 @@ public class DetailActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        productImage = (ImageView)findViewById(R.id.productImage);
-        //bitmap = getBitmapFromURL(testString);
-
-        new ImageDownloader(productImage).execute("https://api.url2png.com/v6/P5329C1FA0ECB6/be123d197e397a077581099b234283b3/png/?thumbnail_max_width=300&url=http%3A%2F%2Fmakeappicon.com%2F");
-
     }
 
 
@@ -65,11 +59,8 @@ public class DetailActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
         private static final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
-        private String testString = "https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png";
-        private String mPostsStr;
 
-        public PlaceholderFragment() {
-        }
+        public PlaceholderFragment() { }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,25 +68,15 @@ public class DetailActivity extends Activity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             Intent intent = getActivity().getIntent();
 
-
-            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                this.mPostsStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-                //Testing intent Post object handling.
+            if (intent != null) {
                 Post post = (Post) intent.getSerializableExtra("post");
-                Log.d(LOG_TAG, "Test passing post on intent. post.name -> " + post.getName());
-
-
-                //((TextView) rootView.findViewById(R.id.detailFragment_textView)).setText(mPostsStr);
+                ImageView prodImgView = (ImageView) rootView.findViewById(R.id.detailFragment_productImageView);
+                new ImageDownloader(prodImgView).execute(post.getScreenshot_url_300px());
+                TextView nameTextView = (TextView) rootView.findViewById(R.id.detailFragment_productTagLineView);
+                nameTextView.setText(post.getTagline());
             }
-
-
-
 
             return rootView;
         }
-
-
     }
-
 }

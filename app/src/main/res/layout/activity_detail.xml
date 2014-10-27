@@ -6,31 +6,5 @@
     tools:context="com.example.jonathanlei.producthuntandroidapp.DetailActivity"
     tools:ignore="MergeRootFrame" >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="179dp"
-        android:scaleType="centerCrop"
-        android:id="@+id/productImage"
-        android:layout_gravity="left|top" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="158dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Make App Icon\n
-                      GenerateApp Icons of ALL sizes with a click\n
-                      Votes: 139\n
-                      Maker: Brian Clark\n
-                      Discussion: http://www.producthunt.com/posts/make-app-icon"
-        android:id="@+id/productDetail"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="126dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/comments"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal|bottom" />
 
 </FrameLayout>
