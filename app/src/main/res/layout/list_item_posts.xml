@@ -6,20 +6,22 @@
 
     <ImageView
         android:id="@+id/post_imgView"
-        android:layout_width="100px"
-        android:layout_height="100px"
+        android:layout_margin="10px"
+        android:layout_width="200px"
+        android:layout_height="200px"
         android:layout_marginLeft="4px"
         android:layout_marginRight="10px"
         android:layout_marginTop="4px"
-        android:src="@drawable/ic_launcher"></ImageView>
+        android:src="@drawable/ic_launcher" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/post_nameView"
+        android:layout_marginTop="25px"
         android:layout_toRightOf="@+id/post_imgView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:textSize="35px" />
+        android:textSize="55px" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_margin="10px"
@@ -29,8 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tag line"
-        android:textSize="30px"
-        />
+        android:textSize="45px" />
 
 
 </RelativeLayout>
