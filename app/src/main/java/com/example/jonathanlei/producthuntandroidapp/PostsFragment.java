@@ -1,6 +1,7 @@
 package com.example.jonathanlei.producthuntandroidapp;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.content.Intent;
+
+import com.example.jonathanlei.producthuntandroidapp.model.Post;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class PostsFragment extends Fragment {
 
     private String access_token;
 
-    private ArrayAdapter<String> mPostsAdapter;
+    private PostsArrayAdapter mPostsAdapter;
 
     public PostsFragment() { }
 
@@ -48,32 +49,29 @@ public class PostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        FetchProductHuntApiTask fetchProductHunt_apiTask = new FetchProductHuntApiTask();
-        fetchProductHunt_apiTask.execute(GET_OAUTH_TOKEN);
+        ProductHuntApiTask oauthTask = new ProductHuntApiTask();
+        oauthTask.execute(GET_OAUTH_TOKEN);
+
 
         Button searchButton = (Button) rootView.findViewById(R.id.search_button);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                FetchProductHuntApiTask postGetter = new FetchProductHuntApiTask();
-                postGetter.execute(GET_DAILY_POSTS);
+                ProductHuntApiTask postsGetterTask = new ProductHuntApiTask();
+                postsGetterTask.execute(GET_DAILY_POSTS);
             }
         });
 
-        mPostsAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.list_item_posts,
-                R.id.list_item_posts_textView
-                ,
-                new ArrayList<String>());
+        mPostsAdapter = new PostsArrayAdapter(getActivity(), new ArrayList<Post>());
         ListView listView = (ListView) rootView.findViewById(R.id.listView_posts);
         listView.setAdapter(mPostsAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String nameStr = mPostsAdapter.getItem(position).toString();
+                Post post = (Post) mPostsAdapter.getItem(position);
+                String nameStr = post.getName();
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra(Intent.EXTRA_TEXT, nameStr);
                 startActivity(intent);
@@ -84,12 +82,14 @@ public class PostsFragment extends Fragment {
     }
 
 
-    public class FetchProductHuntApiTask extends AsyncTask<String, Void, ArrayList<String>> {
+    public class ProductHuntApiTask extends AsyncTask<String, Void, JSONArray> {
 
-        private final String LOG_TAG = FetchProductHuntApiTask.class.getSimpleName();
+        private final String LOG_TAG = ProductHuntApiTask.class.getSimpleName();
         private final String PRODUCT_HUNT_API_URL = "https://api.producthunt.com/v1/";
-        private final String client_api_key = "f4e6e5c4813a1b4542fce5d24dab367727825497ef4ec02afcfbec0518a46fa5";
-        private final String client_secret = "c0f49bf9d0148ae323651d00e21fe1289b7dc1b954364aa5be9f66e7ca048521";
+        private final String client_api_key =
+                "f4e6e5c4813a1b4542fce5d24dab367727825497ef4ec02afcfbec0518a46fa5";
+        private final String client_secret =
+                "c0f49bf9d0148ae323651d00e21fe1289b7dc1b954364aa5be9f66e7ca048521";
         private final String grant_type = "client_credentials";
 
         //Json Parse oauth token
@@ -113,10 +113,6 @@ public class PostsFragment extends Fragment {
                         .build();
 
                 URL url = new URL(builtUri.toString());
-
-                Log.v(LOG_TAG, "url is: " + url.toString());
-
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.connect();
@@ -169,21 +165,7 @@ public class PostsFragment extends Fragment {
             }
         }
 
-        private ArrayList<String> getProductNamesFromJsonString(String json)throws JSONException{
-
-            JSONObject postResponse = new JSONObject(json);
-            JSONArray posts = postResponse.getJSONArray("posts");
-
-            ArrayList<String> nameList = new ArrayList<String>();
-            for(int i=0; i < posts.length(); i++ ){
-                JSONObject post = posts.getJSONObject(i);
-                nameList.add(post.getString("name"));
-            }
-
-            return nameList;
-        }
-
-        private ArrayList<String> getProductHuntDailyPosts(String accessToken) {
+        private JSONArray getProductHuntDailyPosts(String accessToken) {
 
             String getPostURL = PRODUCT_HUNT_API_URL + "posts";
 
@@ -203,7 +185,7 @@ public class PostsFragment extends Fragment {
 
                 if (inputStream == null) {
                     // Nothing to do.
-                    //return null;
+                    return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder buffer = new StringBuilder();
@@ -219,7 +201,8 @@ public class PostsFragment extends Fragment {
                     // Stream was empty.  No point in parsing.
 
                 }
-                return getProductNamesFromJsonString(buffer.toString());
+                JSONObject data = new JSONObject(buffer.toString());
+                return data.getJSONArray("posts");
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
@@ -241,15 +224,12 @@ public class PostsFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
-                //return null;
             }
-
-
             return null;
         }
 
         @Override
-        protected ArrayList<String> doInBackground(String... params) {
+        protected JSONArray doInBackground(String... params) {
             if (params.length > 0) {
                 if (params[0].compareTo(GET_OAUTH_TOKEN) == 0) {
                     access_token = getOauthToken();
@@ -264,11 +244,17 @@ public class PostsFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> data) {
+        protected void onPostExecute(JSONArray data) {
             if (data != null) {
-                mPostsAdapter.clear();
-                for (String str : data) {
-                    mPostsAdapter.add(str);
+                Log.d(LOG_TAG, "Data: " + data.toString());
+                try {
+                    for (int i = 0; i < data.length(); ++i) {
+                        Post post = new Post(data.getJSONObject(i));
+                        mPostsAdapter.add(post);
+                    }
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG,e.getMessage(),e);
+                    e.printStackTrace();
                 }
             }
         }
