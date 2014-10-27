@@ -3,10 +3,12 @@ package com.example.jonathanlei.producthuntandroidapp.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by anthony on 10/27/14.
  */
-public class User {
+public class User implements Serializable {
     private int id;
     private String
             name,

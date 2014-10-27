@@ -5,12 +5,15 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.jonathanlei.producthuntandroidapp.model.Post;
 
 
 public class DetailActivity extends Activity {
@@ -62,7 +65,7 @@ public class DetailActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
         private static final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
-        String testString = "https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png";
+        private String testString = "https://pbs.twimg.com/profile_images/2284174624/4l5krl3re8cpp0nfsgw6.png";
         private String mPostsStr;
 
         public PlaceholderFragment() {
@@ -77,6 +80,11 @@ public class DetailActivity extends Activity {
 
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
                 this.mPostsStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                //Testing intent Post object handling.
+                Post post = (Post) intent.getSerializableExtra("post");
+                Log.d(LOG_TAG, "Test passing post on intent. post.name -> " + post.getName());
+
 
                 //((TextView) rootView.findViewById(R.id.detailFragment_textView)).setText(mPostsStr);
             }

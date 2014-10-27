@@ -4,12 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by anthony on 10/27/14.
  */
-public class Post {
+public class Post implements Serializable {
     private int id, comments_count, votes_count;
     private String
             name,
@@ -49,7 +50,7 @@ public class Post {
             this.makers.add(new User(makers.getJSONObject(i)));
         }
     }
-    
+
     public int getId() {
         return id;
     }
