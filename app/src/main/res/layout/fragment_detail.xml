@@ -18,7 +18,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="158dp"
+        android:layout_height="100dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Product Tagline goes here"
         android:id="@+id/detailFragment_productTagLineView"
@@ -26,12 +26,11 @@
         android:layout_gravity="center"
         android:textAlignment="center" />
 
-    <TextView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="126dp"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/comments"
-        android:id="@+id/detailFragment_productCommentView"
+        android:id="@+id/listView_detailFragmentComment"
         android:layout_below="@+id/detailFragment_productTagLineView"
         android:layout_gravity="center_horizontal|bottom" />
 

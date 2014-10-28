@@ -73,6 +73,7 @@ public class PostsFragment extends Fragment {
                 Post post = (Post) mPostsAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("post", post);
+                intent.putExtra("access_token", access_token);
                 startActivity(intent);
             }
         });
@@ -246,6 +247,7 @@ public class PostsFragment extends Fragment {
         protected void onPostExecute(JSONArray data) {
             if (data != null) {
                 try {
+                    mPostsAdapter.clear();
                     for (int i = 0; i < data.length(); ++i) {
                         Post post = new Post(data.getJSONObject(i));
                         mPostsAdapter.add(post);

@@ -9,8 +9,8 @@ import java.io.Serializable;
  * Created by anthony on 10/27/14.
  */
 public class User implements Serializable {
-    private int id;
-    private String
+
+    private String id,
             name,
             headline,
             created_at,
@@ -21,7 +21,7 @@ public class User implements Serializable {
             image_url_original;
 
     public User(JSONObject user) throws JSONException {
-        id = user.getInt("id");
+        id = user.getString("id");
         name = user.getString("name");
         headline = user.getString("headline");
         created_at = user.getString("created_at");
@@ -37,7 +37,7 @@ public class User implements Serializable {
         
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

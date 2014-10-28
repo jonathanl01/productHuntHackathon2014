@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * Created by anthony on 10/27/14.
  */
 public class Post implements Serializable {
-    private int id, comments_count, votes_count;
-    private String
+    private int  comments_count, votes_count;
+    private String id,
             name,
             tagline,
             created_at,
@@ -26,11 +26,13 @@ public class Post implements Serializable {
     private ArrayList<User> makers;
 
     public Post(JSONObject post) throws JSONException {
-        id = post.getInt("id");
+        id = post.getString("id");
         name = post.getString("name");
         tagline = post.getString("tagline");
         created_at = post.getString("created_at");
         day = post.getString("day");
+        comments_count = post.getInt("comments_count");
+        votes_count = post.getInt("votes_count");
         discussion_url = post.getString("discussion_url");
         redirect_url = post.getString("redirect_url");
         setScreenShotUrls(post.getJSONObject("screenshot_url"));
@@ -51,7 +53,7 @@ public class Post implements Serializable {
         }
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

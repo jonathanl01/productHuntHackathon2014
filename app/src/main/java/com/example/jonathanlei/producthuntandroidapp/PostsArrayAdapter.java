@@ -24,7 +24,7 @@ public class PostsArrayAdapter extends ArrayAdapter {
     }
 
     public PostsArrayAdapter(Context context, ArrayList<Post> posts) {
-        super(context, R.layout.list_item_posts, posts);
+        super(context, R.layout.list_item_post, posts);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PostsArrayAdapter extends ArrayAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.list_item_posts, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_post, parent, false);
             viewHolder.name = (TextView) convertView.findViewById(R.id.post_nameView);
             viewHolder.tagline = (TextView) convertView.findViewById(R.id.post_tagLineView);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.post_imgView);
